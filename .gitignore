@@ -1,0 +1,15 @@
+node_modules/
+arcadia.db
+arcadia.db-shm
+arcadia.db-wal
+covers/
+screenshots/
+igdb-credentials.json
+logs/
+
+# Ship of Harkinian / 2Ship configs (not part of Arcadia)
+2ship2harkinian.json
+2S2HTimeSplitData.json
+imgui.ini
+presets/
+randomizer/

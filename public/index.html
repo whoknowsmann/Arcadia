@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arcadia</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header id="header">
+      <div class="header-left">
+        <h1 class="logo">◉ Arcadia</h1>
+      </div>
+      <div class="header-center">
+        <input type="text" id="search" placeholder="Search games..." autocomplete="off">
+      </div>
+      <div class="header-right">
+        <button id="btn-scan" title="Scan ROM directories">⟳ Scan</button>
+        <button id="btn-settings" title="Settings">⚙</button>
+      </div>
+    </header>
+
+    <div id="main">
+      <!-- Sidebar -->
+      <nav id="sidebar">
+        <div class="nav-section">
+          <button class="nav-item active" data-system="all">
+            <span class="nav-icon">🎮</span> All Games
+            <span class="nav-count" id="count-all">0</span>
+          </button>
+          <button class="nav-item" data-system="favorites">
+            <span class="nav-icon">★</span> Favorites
+            <span class="nav-count" id="count-fav">0</span>
+          </button>
+          <button class="nav-item" data-system="recent">
+            <span class="nav-icon">🕐</span> Recently Played
+          </button>
+        </div>
+
+        <div class="nav-divider"></div>
+        <div class="nav-label">SYSTEMS</div>
+
+        <div class="nav-section">
+          <button class="nav-item" data-system="gb">
+            <span class="nav-icon sys-gb">●</span> Game Boy
+            <span class="nav-count" id="count-gb">0</span>
+          </button>
+          <button class="nav-item" data-system="gbc">
+            <span class="nav-icon sys-gbc">●</span> Game Boy Color
+            <span class="nav-count" id="count-gbc">0</span>
+          </button>
+          <button class="nav-item" data-system="gba">
+            <span class="nav-icon sys-gba">●</span> Game Boy Advance
+            <span class="nav-count" id="count-gba">0</span>
+          </button>
+          <button class="nav-item" data-system="n64">
+            <span class="nav-icon sys-n64">●</span> Nintendo 64
+            <span class="nav-count" id="count-n64">0</span>
+          </button>
+          <button class="nav-item" data-system="gcn">
+            <span class="nav-icon sys-gcn">●</span> GameCube
+            <span class="nav-count" id="count-gcn">0</span>
+          </button>
+          <button class="nav-item" data-system="xbox">
+            <span class="nav-icon sys-xbox">●</span> Xbox
+            <span class="nav-count" id="count-xbox">0</span>
+          </button>
+          <button class="nav-item" data-system="ps4">
+            <span class="nav-icon sys-ps4">●</span> PlayStation 4
+            <span class="nav-count" id="count-ps4">0</span>
+          </button>
+        </div>
+
+        <div class="nav-divider"></div>
+        <div class="nav-label">PC PORTS</div>
+
+        <div class="nav-section">
+          <button class="nav-item" data-system="port">
+            <span class="nav-icon sys-port">●</span> Ports
+            <span class="nav-count" id="count-port">0</span>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Game Grid -->
+      <div id="content">
+        <div id="content-header">
+          <h2 id="content-title">All Games</h2>
+          <div id="sort-controls">
+            <select id="genre-filter">
+              <option value="">All Genres</option>
+            </select>
+            <select id="sort-select">
+              <option value="name">A → Z</option>
+              <option value="recent">Recently Played</option>
+              <option value="most_played">Most Played</option>
+              <option value="rating">Highest Rated</option>
+              <option value="release_date">Release Date</option>
+              <option value="genre">Genre</option>
+              <option value="developer">Developer</option>
+            </select>
+          </div>
+        </div>
+        <div id="game-grid"></div>
+        <div id="empty-state" class="hidden">
+          <p>No games found. Click <strong>⟳ Scan</strong> to index your ROM directories.</p>
+        </div>
+        <div id="scanning-state" class="hidden">
+          <p>Scanning ROM directories...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-overlay" class="hidden">
+      <div id="settings-modal">
+        <div id="settings-header">
+          <h2>Settings</h2>
+          <button id="settings-close">✕</button>
+        </div>
+
+        <div id="settings-tabs">
+          <button class="settings-tab active" data-tab="emulators">Emulators</button>
+          <button class="settings-tab" data-tab="directories">ROM Directories</button>
+          <button class="settings-tab" data-tab="ports">PC Ports</button>
+        </div>
+
+        <div id="settings-body">
+          <!-- Emulators Tab -->
+          <div class="settings-panel active" data-panel="emulators">
+            <p class="settings-hint">Set the executable path and launch arguments for each system. Use <code>{rom}</code> as the ROM file placeholder.</p>
+            <div id="emulator-list"></div>
+          </div>
+
+          <!-- ROM Directories Tab -->
+          <div class="settings-panel" data-panel="directories">
+            <p class="settings-hint">Directories to scan for ROMs. Each directory is mapped to a system.</p>
+            <div id="directory-list"></div>
+            <button id="btn-add-dir" class="btn-add">+ Add Directory</button>
+          </div>
+
+          <!-- Ports Tab -->
+          <div class="settings-panel" data-panel="ports">
+            <p class="settings-hint">Native PC ports and standalone executables.</p>
+            <div id="port-list"></div>
+            <button id="btn-add-port" class="btn-add">+ Add Port</button>
+          </div>
+        </div>
+
+        <div id="settings-footer">
+          <span id="settings-status"></span>
+          <div id="settings-footer-buttons">
+            <button id="settings-cancel" class="btn-secondary">Cancel</button>
+            <button id="settings-save" class="btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Detail Modal -->
+    <div id="modal-overlay" class="hidden">
+      <div id="modal">
+        <button id="modal-close">✕</button>
+        <div id="modal-content">
+          <div id="modal-cover">
+            <div class="cover-placeholder" id="modal-cover-img"></div>
+          </div>
+          <div id="modal-info">
+            <h2 id="modal-title"></h2>
+            <div id="modal-meta">
+              <span id="modal-system" class="badge"></span>
+              <span id="modal-region" class="badge badge-outline"></span>
+              <span id="modal-format" class="badge badge-outline"></span>
+              <span id="modal-size"></span>
+            </div>
+            <div id="modal-metadata">
+              <div id="modal-genre" class="meta-row"></div>
+              <div id="modal-developer" class="meta-row"></div>
+              <div id="modal-publisher" class="meta-row"></div>
+              <div id="modal-release-date" class="meta-row"></div>
+              <div id="modal-players" class="meta-row"></div>
+              <div id="modal-rating-display" class="meta-row"></div>
+            </div>
+            <div id="modal-description"></div>
+            <div id="modal-stats">
+              <span id="modal-plays"></span>
+              <span id="modal-last-played"></span>
+              <span id="modal-total-time"></span>
+            </div>
+            <div id="modal-actions">
+              <button id="modal-play" class="btn-play">▶ PLAY</button>
+              <button id="modal-fav" class="btn-fav">★ Favorite</button>
+              <button id="modal-rescrape" class="btn-secondary" title="Re-fetch metadata from IGDB">⟳ Scrape</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="gamepad.js"></script>
+</body>
+</html>
